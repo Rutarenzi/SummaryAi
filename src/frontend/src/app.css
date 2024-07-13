@@ -1,0 +1,272 @@
+:root{
+  ---brown:#ff4d4d;
+  ---background: #1c1d20;
+  ---background2: #28292b;
+  ---borderColor: #434245;
+  ---background3:#161519
+
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,body{
+  height: 100%;
+  width: 100%;
+  font-family: 'Source Sans Pro',sans-serif;
+  background: var(---background)
+}
+
+/* Top navbar style */
+
+.topbar{
+  width: 100%;
+  height: 8vh;
+  border-bottom: 1px solid var(---borderColor) ;
+}
+
+.topbarContainer{
+ display:flex;
+ width:80%;
+ margin:auto;
+ padding: 12px 8px;
+ height: 100%;
+ gap: 3px
+}
+.logo{
+border-radius: 8px;
+flex-basis: 10%;
+}
+.logo-IMG{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.InputSearch{
+  flex-basis: 75%;
+}
+
+.SearchContainer{
+  margin: auto;
+  width: 60%;
+  display: flex;
+  position: relative
+}
+.InputKey{
+  padding: 12px;
+  outline: none;
+  border-radius: 8px;
+  border: 0.1px solid var(---borderColor);
+  flex-basis:100%;
+  background: var(---background2);
+  color: white
+}
+
+.btn-logout{
+flex-basis: 10%;
+width: 100%;
+display: flex;
+gap:4px;
+color: white
+}
+.BtnSaver{
+  flex-basis: 15%;
+  padding:8px;
+  border-radius: 8px;
+  border: 0px;
+  position: absolute;
+  right:0;
+  bottom: 0;
+  top:0;
+  background-color: var(---brown);
+  color: white
+}
+.BtnSave{
+width: 100%;
+height: 100%;
+font-size: 14px;
+border: none;
+border-radius: 8px;
+padding: 8px 5px;
+background-color: var(---brown);
+color: white
+}
+
+
+/* Home component style */
+.HomeContainer{
+  height: 92vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.Welcome{
+  height: 50%;
+  width: 50%;
+  text-align: center;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.Welcome h1{
+ color: var(---brown)
+}
+.Welcome p{
+  color: white;
+  font-size: 25px;
+  width: 80%;
+  margin:auto;
+  font-family: "Input Sans", sans-serif;
+  font-weight: 300;
+  font-size: 30px;
+  line-height: 30px;
+}
+
+.loginBtn{
+  width: 50%;
+  margin: auto;
+  padding: 14px 8px;
+  font-size: 18px;
+  border-radius: 50px;
+  border: none;
+  background-color: var(---brown);
+}
+
+
+
+/* summary component style */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 92vh;
+  width: 100%;
+  overflow: hidden;
+  justify-content: space-around;
+}
+
+.chat-box {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.chat-box::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.chat-box::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.chat-box::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.chat-box::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.chat-box::-webkit-scrollbar-corner {
+  background: #f1f1f1;
+}
+
+.chat-message {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 75%;
+  margin:auto;
+  margin-bottom: 15px;
+}
+
+.chat-message.user {
+  align-self: flex-end;
+  background-color: var(---background3);
+  color: rgb(233, 228, 228);
+  max-width: 70%;
+  margin-right: 25px;
+}
+
+.chat-message.ai {
+  align-self: flex-start;
+  background-color: var(---background2);
+  color: rgb(233, 228, 228);
+  max-width: 95%;
+}
+.chat-message.ai .actionBtn{
+  display: none
+}
+.actionBtn{
+  width:10%;
+  display: flex;
+  margin-top: 10px
+}
+.editBtn,.deleteBtn{
+  border-radius: 8px;
+  padding: 5px;
+  background: var(---brown);
+  color: white
+}
+.chat-input-box {
+  display: flex;
+  border-top: 1px solid #ccc;
+  width: 80%;
+  margin: auto;
+  position: relative;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 0;
+  outline: none;
+  font-size: 16px;
+  padding: 20px;
+  background: var(---background2);
+  color: white
+}
+
+.chat-submit {
+  padding: 10px 15px;
+  font-size: 17px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(---brown);
+  color: #fff;
+  cursor: pointer;
+  position: absolute;
+  right: 2%;
+  bottom: 5%;
+}
+
+.chat-submit:hover {
+  background-color: #0056b3;
+}
+@media (max-width: 700px){
+  .SearchContainer { 
+      width: 100%;
+  }
+  .topbarContainer{
+      width: 100%;
+      padding: 10px 5px;
+  }
+  .Welcome{
+      width: 80%
+
+  }
+  .BtnSave{
+      font-size: 12px
+  }
+}
+@media (min-width: px) and (max-width: 1199px){
+ 
+}

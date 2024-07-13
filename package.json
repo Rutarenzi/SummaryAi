@@ -1,0 +1,35 @@
+{
+  "name": "summaryai",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "vite build --config src/frontend/vite.config.mjs",
+    "prebuild": "dfx generate",
+    "start": "vite --config src/frontend/vite.config.mjs",
+    "deploy:local": "dfx deploy --network=local",
+    "deploy:ic": "dfx deploy --network=ic",
+    "generate": "dfx generate backend",
+    "gen-deploy:local": "dfx generate backend && dfx deploy --network=local"
+  },
+  "author": "Rutagarama axcel",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.3.2"
+  },
+  "dependencies": {
+    "@dfinity/agent": "^1.4.0",
+    "@dfinity/auth-client": "^1.4.0",
+    "@dfinity/candid": "^1.4.0",
+    "@dfinity/nns": "^5.1.2",
+    "@dfinity/principal": "^1.4.0",
+    "@dfinity/utils": "^2.3.1",
+    "axios": "^1.7.2",
+    "azle": "^0.22.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.4.1",
+    "react-icons": "^5.2.1",
+    "uuid": "^10.0.0"
+  }
+}
