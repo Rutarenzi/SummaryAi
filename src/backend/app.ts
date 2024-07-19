@@ -12,14 +12,14 @@ import {
     Principal,
     Opt,
     nat64,
-    Duration,
+    // Duration,
     Result,
     bool,
     Canister,
     init,
     Void,
     nat,
-  } from "azle";
+  } from "azle/experimental";
 import { v4 as uuidv4 } from "uuid";
 
 const NoteSummary = Record({
@@ -73,7 +73,7 @@ export default Canister({
          note,
          summary,
         }
-        if("None" in UserSummaryOpt){
+        if('None' in UserSummaryOpt){
           const summaryRecord = {
             id: uuidv4(),
             summaries: [{...noteSummary}]
