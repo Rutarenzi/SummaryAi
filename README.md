@@ -3,6 +3,8 @@
 ## Overview
 
 The SummaryAI is designed to help users summarize their notes efficiently and store both the original notes and their summaries for future reference. This tool leverages Chargpt api and its techniques to generate concise summaries of lengthy texts, enabling users to quickly review and recall important information
+![Alt text](src/frontend/src/assets/summarywork.png)
+
 
 ## Key Features of SummaryAI
 
