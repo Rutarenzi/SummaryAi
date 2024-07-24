@@ -14,8 +14,8 @@
             "gzip":true
          },
          "backend":{
-            "type":"custom",
-            "candid_gen":"http",
+            "type":"azle",
+            "candid_gen":"automatic",
             "main":"src/backend/app.ts",
             "candid":"src/backend/app.did",
             "declarations": {
