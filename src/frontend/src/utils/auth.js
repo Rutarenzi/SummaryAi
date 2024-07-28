@@ -2,7 +2,7 @@ import { AuthClient } from "@dfinity/auth-client";
 
 const MAX_TTL = BigInt(7 * 24 * 60 * 60 * 1000 * 1000 * 1000);
 //check the value of this identity
-const IDENTITY_PROVIDER = `http://be2us-64aaa-aaaaa-qaabq-cai.localhost:4943/`;
+const IDENTITY_PROVIDER = `http://bd3sg-teaaa-aaaaa-qaaba-cai.localhost:8000/`;
 
 
 export const getAuthClient=async()=>{
