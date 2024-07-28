@@ -20,7 +20,6 @@ export const login=async()=>{
         identityProvider: IDENTITY_PROVIDER,
         onSuccess: async()=>{
             window.auth.isAuthenticated = await authClient.isAuthenticated();
-            // localStorage.setItem("summary", JSON.stringify(summary));
             window.location.reload();
         },
     });
@@ -29,7 +28,6 @@ export const login=async()=>{
 
 export const logout=async()=>{   
     const authClient = window.auth.client;
-    // localStorage.removeItem('summary');
     authClient.logout();
     window.location.reload();
 

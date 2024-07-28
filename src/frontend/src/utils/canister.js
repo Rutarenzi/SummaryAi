@@ -2,10 +2,10 @@ import { HttpAgent, Actor } from "@dfinity/agent";
 import { idlFactory } from "../../../declarations/backend/backend.did.js"
 
 //change this Canister 
-const CHAT_CANISTER_ID = "bkyz2-fmaaa-aaaaa-qaaaq-cai";
+const SUMMARY_CANISTER_ID = "bkyz2-fmaaa-aaaaa-qaaaq-cai";
 
 export const getSummaryCanister=async()=>{
- return await getCanister(CHAT_CANISTER_ID,idlFactory);
+ return await getCanister(SUMMARY_CANISTER_IDCANISTER_ID,idlFactory);
 }
 
 const getCanister=async(canisterId,idl)=>{

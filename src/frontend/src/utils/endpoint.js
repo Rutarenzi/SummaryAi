@@ -1,21 +1,21 @@
 import { logout } from "./auth";
-const endpoint = window.canister.summary;
+
 
 export const welcome=async()=>{
- return endpoint.welcome();
+ return await window.canister.summary.welcome();
 }
 
 export const createOrAdd=async(note)=>{
-  return endpoint.createOrAdd(note)
+  return await window.canister.summary.createOrAdd(note)
 }
 
 export const updateNote=async(note,id)=>{
-    return endpoint.updateNote(note,id)
+    return await window.canister.summary.updateNote(note,id)
 }
 
 export const getAll=async()=>{
     try{
-       return endpoint.getAll()
+       return await window.canister.summary.getAll()
     }catch(error){
         if (error.name === "AgentHTTPResponseError"){
           logout()
@@ -23,13 +23,13 @@ export const getAll=async()=>{
     }
 }
 export const deleteAll=async()=>{
-  return endpoint.deleteAll();
+  return await window.canister.summary.deleteAll();
 }
 
 export const deleteSingle=async(noteId)=>{
-   return endpoint.deleteSingle(noteId)
+   return await window.canister.summary.deleteSingle(noteId)
 }
 
 export const searchNotes=async(note)=>{
-  return endpoint.searchNotes(note)
+  return await window.canister.summary.searchNotes(note)
 }

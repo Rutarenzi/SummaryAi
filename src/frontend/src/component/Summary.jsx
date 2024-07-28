@@ -3,7 +3,7 @@ import { MyContext } from "../Context/myContext";
 import { createOrAdd,updateNote,deleteSingle } from "../utils/endpoint";
 import {AiOutlineEdit,AiOutlineDelete } from "react-icons/ai"
 const Summary=()=>{
-    const [input, setInput] = useState();
+    const [input, setInput] = useState("");
     const [editor,setEditor]= useState(false);
     const [id,setId] = useState()
     const { summaries,error,loading,getSummary } = useContext(MyContext);
@@ -17,7 +17,7 @@ const Summary=()=>{
 
     const handleSubmit = async(e) => {
         e.preventDefault();
-        const note = e.target.value.note;
+        const note = input;
         if(note.length >10) {
           await createOrAdd(note)
           await getSummary()
@@ -67,7 +67,7 @@ const Summary=()=>{
             type="text"
             name="note"
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => {setInput(e.target.value)}}
             placeholder="Type your message..."
             className="chat-input"
             row="1"
