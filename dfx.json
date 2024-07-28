@@ -8,7 +8,7 @@
             },
             "source":[
                 "src/frontend/src/assets",
-                "src/frontend/dist"
+                "dist"
             ],
             "type":"assets",
             "gzip":true

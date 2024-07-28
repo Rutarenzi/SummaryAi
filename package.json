@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "vite build --config src/frontend/vite.config.mjs",
+    "build": "vite build ",
     "prebuild": "dfx generate",
-    "start": "vite --config src/frontend/vite.config.mjs",
+    "start": "vite",
     "deploy:local": "dfx deploy --network=local",
     "deploy:ic": "dfx deploy --network=ic",
     "generate": "dfx generate backend",
