@@ -73,23 +73,23 @@ export default Canister({
          note,
          summary,
         }
-        if('None' in UserSummaryOpt){
+        if(!UserSummaryOpt){
           const summaryRecord = {
             id: uuidv4(),
             summaries: [{...noteSummary}]
           }  
           UserSummary.insert(ic.caller(), summaryRecord)
         }else {
-            const existNoteSummary = UserSummaryOpt.Some.summaries
+            const existNoteSummary = UserSummaryOpt.summaries
             const newNoteSummary = [...existNoteSummary,{...noteSummary}];
             const updateSummary = {
-                id:UserSummaryOpt.Some.id,
+                id:UserSummaryOpt.id,
                 summaries: newNoteSummary
             }
             UserSummary.insert(ic.caller(),updateSummary)
         }
          
-        return Ok(UserSummaryOpt.Some as Summary)
+        return Ok(UserSummaryOpt as Summary)
        }catch(error){
         return Err({Error: `Error Occured ${error}`})
        }
@@ -101,9 +101,9 @@ export default Canister({
                 return Err({Unsupported:"Error occured!! note is less 10 or empty id"})
             }
             const userSummaryOpt = UserSummary.get(ic.caller());
-            if("None" in userSummaryOpt){
+            if(!userSummaryOpt){
                 return Err({NotFound:"You do not have any summary yet"})
-            }else if(!userSummaryOpt.Some.summaries.map(item=> item.id).includes(id)){
+            }else if(!userSummaryOpt.summaries.map(item=> item.id).includes(id)){
                 return Err({NotFound:"this Notesummary does not exist or belong to you"})
             } else {
                 const summary = await generateSummary(note);
@@ -115,15 +115,15 @@ export default Canister({
                  note,
                  summary,
                 }
-                const existNoteSummary = userSummaryOpt.Some.summaries
+                const existNoteSummary = userSummaryOpt.summaries
                 const updateNoteSummary = [...existNoteSummary,{...noteSummary}];
                 const updateSummary = {
-                    id:userSummaryOpt.Some.id,
+                    id:userSummaryOpt.id,
                     summaries: updateNoteSummary
                 }
                 UserSummary.insert(ic.caller(),updateSummary)        
             }
-            return Ok(userSummaryOpt.Some.summaries)
+            return Ok(userSummaryOpt.summaries)
 
         }catch(error){
             return Err({Error: `Error Occured ${error}`})
@@ -132,10 +132,10 @@ export default Canister({
     getAll: query([],Result(Vec(NoteSummary),messages),()=>{
         try{
             const userSummaryOpt = UserSummary.get(ic.caller());
-            if("None" in userSummaryOpt){
+            if(!userSummaryOpt){
                 return Err({NotFound:"You do not have any summary yet"})
             }
-            return Ok(userSummaryOpt.Some.summaries)
+            return Ok(userSummaryOpt.summaries)
         }catch(error){
             return Err({Error: `Error Occured ${error}`})  
         }
@@ -143,7 +143,7 @@ export default Canister({
     deleteAll: query([],Result(text,messages),()=>{
         try{
             const userSummaryOpt = UserSummary.get(ic.caller());
-            if("None" in userSummaryOpt){
+            if(!userSummaryOpt){
                 return Err({NotFound:"You do not have any summary yet"})
             }
             UserSummary.remove(ic.caller())
@@ -160,17 +160,17 @@ export default Canister({
             return Err({Unsupported:"Please provide the id"})
         }
         const userSummaryOpt = UserSummary.get(ic.caller());
-        if("None" in userSummaryOpt){
+        if(!userSummaryOpt){
             return Err({NotFound:"You do not have any summary yet"})
-        }else if(!userSummaryOpt.Some.summaries.map(item=> item.id).includes(id)){
+        }else if(!userSummaryOpt.summaries.map(item=> item.id).includes(id)){
             return Err({NotFound:"this Notesummary does not exist or belong to you"})
         } else {
-            const existNoteSummary = userSummaryOpt.Some.summaries
+            const existNoteSummary = userSummaryOpt.summaries
             const updateNoteSummary = existNoteSummary.filter((data:NoteSummary)=>{
                 return data.id !== id
             })
             const updateSummary = {
-                id:userSummaryOpt.Some.id,
+                id:userSummaryOpt.id,
                 summaries: updateNoteSummary
             }
             UserSummary.insert(ic.caller(),updateSummary)            
@@ -184,11 +184,11 @@ export default Canister({
    searchNotes: query([text], Result(Vec(NoteSummary),messages),(note)=>{
     try{
         const userSummaryOpt = UserSummary.get(ic.caller());
-        if("None" in userSummaryOpt){
+        if(!userSummaryOpt){
             return Err({NotFound:"You do not have any summary yet"})
         }
         const lowerNote = note.toLowerCase();
-        const noteSum =userSummaryOpt.Some.summaries
+        const noteSum =userSummaryOpt.summaries
         const searchResult = noteSum.filter((notesummary)=>{
             return notesummary.note.toLowerCase().includes(lowerNote) ||
             notesummary.summary.toLowerCase().includes(lowerNote)
