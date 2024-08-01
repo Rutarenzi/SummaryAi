@@ -10,7 +10,8 @@ const App=()=>{
     return(
         <>
          <TopBar/>
-         {loggedIn?<Summary/> : <Home/>} 
+         {/* {loggedIn?<Summary/> : <Home/>}  */}
+         <Summary/>
         </>
         
     )

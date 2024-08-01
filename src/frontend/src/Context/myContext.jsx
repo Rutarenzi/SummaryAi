@@ -1,4 +1,4 @@
-import React,{useCallback, useState,createContext} from "react";
+import React,{ useCallback, useState,createContext } from "react";
 import { getAll } from "../utils/endpoint";
 
 const MyContext = createContext();
@@ -16,9 +16,12 @@ const MyContext = createContext();
          setLoading(true)
          const response= await getAll();
          if(response.Ok){
-           setSummaries((prev)=>[...prev,response])
+           setSummaries(response.Ok)
            setLoading(false);
            setError(" ")
+         }
+         if(response.Err){
+          setLoading(false);
          }
          return;
        }catch(error){
