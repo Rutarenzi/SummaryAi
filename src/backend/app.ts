@@ -23,9 +23,9 @@ import {
 import { v4 as uuidv4 } from "uuid";
 
 const NoteSummary = Record({
+    id: text,
     note: text,
-    summary: text,
-    id: text
+    summary: text
 })
 
 
@@ -33,7 +33,8 @@ const Summary = Record({
     id: text,
     summaries: Vec(NoteSummary)
 
-})
+});
+
 type NoteSummary = typeof NoteSummary.tsType
 type Summary = typeof Summary.tsType
 
@@ -48,8 +49,7 @@ type messages = typeof messages.tsType
 const UserSummary = StableBTreeMap<Principal,Summary>(0)
 
 const CHATGPT_API_KEY = "your_openai_api_key_here";
-const CHATGPT_API_URL = "https://api.openai.com/v1/engines/davinci-codex/completions";
-
+const CHATGPT_API_URL = "https://api.openai.com/v1/completions";
 
 
 export default Canister({
@@ -57,41 +57,49 @@ export default Canister({
         return "Hello, welcome to summarize!! Give us the note we can summarize"
     }),
      
-    
-    createOrAdd: update([text], Result(Summary,messages),async(note)=>{
+ 
+    createOrAdd: update([text], Result(Summary,messages), async(note)=>{
        try{
-        if(!note || note.length< 10){
+        if(!note || note.length < 10){
             return Err({Unsupported:"Please note can not be empty or less 10"})
         }
+
         const UserSummaryOpt = UserSummary.get(ic.caller());
-        const summary = await generateSummary(note);
+         const summary = await generateSummary(note);
         if(!summary){
             return Err({Error:"Try again! we can not summarize your not now"})
         }
+
         const noteSummary: NoteSummary = {
-         id: uuidv4(),
-         note,
+          id:  uuidv4(),
+          note,
          summary,
         }
         if(!UserSummaryOpt){
-          const summaryRecord = {
-            id: uuidv4(),
-            summaries: [{...noteSummary}]
-          }  
-          UserSummary.insert(ic.caller(), summaryRecord)
-        }else {
-            const existNoteSummary = UserSummaryOpt.summaries
+        const summaryRecord = {
+          id: uuidv4(),
+          summaries: [noteSummary]
+        }  
+         
+        UserSummary.insert(ic.caller(), summaryRecord)
+        
+        }
+        
+        if(UserSummaryOpt){
+            const existNoteSummary = UserSummaryOpt.summaries || []
             const newNoteSummary = [...existNoteSummary,{...noteSummary}];
+
             const updateSummary = {
-                id:UserSummaryOpt.id,
+                id: UserSummaryOpt?.id,
                 summaries: newNoteSummary
             }
+
             UserSummary.insert(ic.caller(),updateSummary)
         }
-         
-        return Ok(UserSummaryOpt as Summary)
+
+        return Ok(UserSummaryOpt)
        }catch(error){
-        return Err({Error: `Error Occured ${error}`})
+        return Err({Error: `Error Occured ${error}`})  
        }
      }),
 
@@ -100,10 +108,12 @@ export default Canister({
             if(!note || note.length< 10  || !id){
                 return Err({Unsupported:"Error occured!! note is less 10 or empty id"})
             }
+
             const userSummaryOpt = UserSummary.get(ic.caller());
+            
             if(!userSummaryOpt){
                 return Err({NotFound:"You do not have any summary yet"})
-            }else if(!userSummaryOpt.summaries.map(item=> item.id).includes(id)){
+            }else if(!userSummaryOpt.summaries.map((item:NoteSummary)=> item.id).includes(id)){
                 return Err({NotFound:"this Notesummary does not exist or belong to you"})
             } else {
                 const summary = await generateSummary(note);
@@ -115,10 +125,11 @@ export default Canister({
                  note,
                  summary,
                 }
-                const existNoteSummary = userSummaryOpt.summaries
+
+                const existNoteSummary = userSummaryOpt.summaries || []
                 const updateNoteSummary = [...existNoteSummary,{...noteSummary}];
                 const updateSummary = {
-                    id:userSummaryOpt.id,
+                    id:userSummaryOpt?.id ,
                     summaries: updateNoteSummary
                 }
                 UserSummary.insert(ic.caller(),updateSummary)        
@@ -129,17 +140,21 @@ export default Canister({
             return Err({Error: `Error Occured ${error}`})
         }
     }),
+
     getAll: query([],Result(Vec(NoteSummary),messages),()=>{
         try{
             const userSummaryOpt = UserSummary.get(ic.caller());
+          
             if(!userSummaryOpt){
                 return Err({NotFound:"You do not have any summary yet"})
             }
+           
             return Ok(userSummaryOpt.summaries)
         }catch(error){
             return Err({Error: `Error Occured ${error}`})  
         }
     }),
+
     deleteAll: query([],Result(text,messages),()=>{
         try{
             const userSummaryOpt = UserSummary.get(ic.caller());
@@ -154,15 +169,18 @@ export default Canister({
         }
 
     }),
-   deleteSingle: query([text],Result(text,messages), (id)=>{
-     try{
+
+ deleteSingle: query([text],Result(text,messages), (id)=>{
+  
+ try{
         if(!id){
             return Err({Unsupported:"Please provide the id"})
         }
+
         const userSummaryOpt = UserSummary.get(ic.caller());
         if(!userSummaryOpt){
             return Err({NotFound:"You do not have any summary yet"})
-        }else if(!userSummaryOpt.summaries.map(item=> item.id).includes(id)){
+        }else if(!userSummaryOpt.summaries.map((item:NoteSummary)=> item.id).includes(id)){
             return Err({NotFound:"this Notesummary does not exist or belong to you"})
         } else {
             const existNoteSummary = userSummaryOpt.summaries
@@ -189,7 +207,7 @@ export default Canister({
         }
         const lowerNote = note.toLowerCase();
         const noteSum =userSummaryOpt.summaries
-        const searchResult = noteSum.filter((notesummary)=>{
+        const searchResult = noteSum.filter((notesummary:NoteSummary)=>{
             return notesummary.note.toLowerCase().includes(lowerNote) ||
             notesummary.summary.toLowerCase().includes(lowerNote)
         })
@@ -203,10 +221,10 @@ export default Canister({
 });
 
 
-async function generateSummary(text: string): Promise<string | null> {
+async function generateSummary(note: text): Promise<text | null> {
     const data = {
-        prompt: `Summarize the following text to 1/3 of its length:\n\n${text}`,
-        max_tokens: Math.ceil(text.split(' ').length / 3),
+        prompt: `Summarize the following text to 1/3 of its length:\n\n${note}`,
+        max_tokens: Math.ceil(note.split(' ').length / 3),
         n: 1,
         stop: null,
         temperature: 0.7,
