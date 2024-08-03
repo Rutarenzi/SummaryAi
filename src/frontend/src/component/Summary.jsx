@@ -60,11 +60,12 @@ const Summary=()=>{
           
           {summaries?.map((msg, index) => (
             <>
+
             <div key={index} className={`chat-message user`}>
               <div>
               {msg.note}
               <div className="actionBtn">
-                <button className="editBtn" onClick={()=>{editNote(msg)}}>
+                <button className="editBtn" onClick={()=>{editNote(msg.note)}}>
                 <AiOutlineEdit/>
                 </button>
                 <button className="deleteBtn" onClick={()=>{deleteNote(msg.id)}}>
@@ -72,6 +73,9 @@ const Summary=()=>{
                 </button>
               </div>
               </div>
+             <div classname="chat-message ai">
+                    {msg.summary}
+                </div>
             </div>
             <div  key={index} className={`chat-message ai`}>
                     <div>{msg.summary}</div>
