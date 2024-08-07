@@ -37,7 +37,7 @@ const TopBar=()=>{
              <div className="logo">
                <img src="src/frontend/src/assets/summaryAI.png" alt="logo image" className="logo-IMG"/>
              </div>
-            {loggedIn &&<><div className="InputSearch">
+          <div className="InputSearch">
               <div className="SearchContainer">
                 <input 
                   type="text"
@@ -63,9 +63,7 @@ const TopBar=()=>{
                 <button className="BtnSave" onClick={logout}>
                   Logout
                 </button>
-             </div>
-             </>
-             }  
+             </div> 
           </div>
         </div>
     )
