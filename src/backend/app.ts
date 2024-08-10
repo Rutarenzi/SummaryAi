@@ -113,28 +113,32 @@ export default Canister({
             
             if(!userSummaryOpt){
                 return Err({NotFound:"You do not have any summary yet"})
-            }else if(!userSummaryOpt.summaries.map((item:NoteSummary)=> item.id).includes(id)){
-                return Err({NotFound:"this Notesummary does not exist or belong to you"})
-            } else {
-                const summary = await generateSummary(note);
-                if(!summary){
-                    return Err({Error:"Try again we can summarize your note for  now"})
-                }
-                const noteSummary: NoteSummary = {
-                 id,
-                 note,
-                 summary,
-                }
-
-                const existNoteSummary = userSummaryOpt.summaries || []
-                const updateNoteSummary = [...existNoteSummary,{...noteSummary}];
-                const updateSummary = {
-                    id:userSummaryOpt?.id ,
-                    summaries: updateNoteSummary
-                }
-                UserSummary.insert(ic.caller(),updateSummary)        
             }
-            return Ok(userSummaryOpt.summaries)
+            
+             if(userSummaryOpt){
+                if(!userSummaryOpt.summaries.map((item:NoteSummary)=> item.id).includes(id)){
+                    return Err({NotFound:"this Notesummary does not exist or belong to you"})
+                } else {
+                    const summary = await generateSummary(note);
+                    if(!summary){
+                        return Err({Error:"Try again we can summarize your note for  now"})
+                    }
+                    const index = userSummaryOpt.summaries.findIndex((item)=>{return item.id === id});
+                    const existNoteSummary = userSummaryOpt.summaries
+                    if(index !== -1){
+                        existNoteSummary[index].note = note;
+                        existNoteSummary[index].summary=summary;
+                        const updateSummary = {
+                            id:userSummaryOpt?.id ,
+                            summaries: existNoteSummary
+                        }
+                        UserSummary.insert(ic.caller(),updateSummary) 
+                    }                         
+                }
+            }
+            const UserSummaryOp = UserSummary.get(ic.caller());
+            return Ok(UserSummaryOp?.summaries)
+              
 
         }catch(error){
             return Err({Error: `Error Occured ${error}`})
