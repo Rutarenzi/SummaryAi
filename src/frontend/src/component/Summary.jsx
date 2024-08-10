@@ -65,10 +65,10 @@ const Summary=()=>{
               <div>
               {msg.note}
               <div className="actionBtn">
-                <button className="editBtn" onClick={()=>{editNote(msg.note)}}>
+                <button className="editBtn" onClick={()=>{editNote(msg)}}>
                 <AiOutlineEdit/>
                 </button>
-                <button className="deleteBtn" onClick={()=>{deleteNote(msg.id)}}>
+                <button className="deleteBtn" onClick={()=>{deleteNote(msg)}}>
                   <AiOutlineDelete/>
                 </button>
               </div>
