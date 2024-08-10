@@ -96,8 +96,8 @@ export default Canister({
 
             UserSummary.insert(ic.caller(),updateSummary)
         }
-
-        return Ok(UserSummaryOpt)
+        const UserSummaryOp= await UserSummary.get(ic.caller());
+        return Ok(UserSummaryOp)
        }catch(error){
         return Err({Error: `Error Occured ${error}`})  
        }
