@@ -170,17 +170,22 @@ export default Canister({
 
     }),
 
- deleteSingle: query([text],Result(text,messages), (id)=>{
+  deleteSingle: update([text],Result(text,messages), (id)=>{
   
  try{
+    
         if(!id){
             return Err({Unsupported:"Please provide the id"})
         }
 
         const userSummaryOpt = UserSummary.get(ic.caller());
+      
         if(!userSummaryOpt){
             return Err({NotFound:"You do not have any summary yet"})
-        }else if(!userSummaryOpt.summaries.map((item:NoteSummary)=> item.id).includes(id)){
+        }
+        
+       if(userSummaryOpt){
+        if(!userSummaryOpt.summaries.map((item:NoteSummary)=>{ return item.id}).includes(id)){
             return Err({NotFound:"this Notesummary does not exist or belong to you"})
         } else {
             const existNoteSummary = userSummaryOpt.summaries
@@ -193,7 +198,8 @@ export default Canister({
             }
             UserSummary.insert(ic.caller(),updateSummary)            
         }
-        return Ok("delete successfully")       
+       }
+        return Ok("deleted successful")       
      }catch(error){
         return Err({Error: `Error Occured ${error}`}) 
      }
