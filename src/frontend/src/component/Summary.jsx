@@ -8,7 +8,7 @@ const Summary=()=>{
     const [input, setInput] = useState("");
     const [editor,setEditor]= useState(false);
     const [id,setId] = useState("")
-    const { summaries,error,loading,getSummary } = useContext(MyContext);
+    const { summaries,error,loading,getSummary,setSummaries } = useContext(MyContext);
   
     useEffect(async()=>{
       const allSummary = async()=>{
@@ -40,6 +40,10 @@ const Summary=()=>{
     setInput(" ");
     setId(" ");
     setEditor(false)
+    if(response.Ok){
+    setSummaries(response.Ok)
+    await getSummary()
+    }
     if(response.Err){
       toast.error(`${response.Err.NotFound ||response.Err.Error || response.Err.Unsupported}`);
     }
@@ -68,14 +72,11 @@ const Summary=()=>{
                 <button className="editBtn" onClick={()=>{editNote(msg)}}>
                 <AiOutlineEdit/>
                 </button>
-                <button className="deleteBtn" onClick={()=>{deleteNote(msg)}}>
+                <button className="deleteBtn" onClick={()=>{deleteNote(msg.id)}}>
                   <AiOutlineDelete/>
                 </button>
               </div>
               </div>
-             <div classname="chat-message ai">
-                    {msg.summary}
-                </div>
             </div>
             <div  key={index} className={`chat-message ai`}>
                     <div>{msg.summary}</div>
