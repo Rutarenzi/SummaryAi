@@ -231,15 +231,16 @@ export default Canister({
 });
 
 
-async function generateSummary(note: text): Promise<text | null> {
+async function generateSummary(note: string): Promise<string| null> {
     const data = {
-        prompt: `Summarize the following text to 1/3 of its length:\n\n${note}`,
-        max_tokens: Math.ceil(note.split(' ').length / 3),
-        n: 1,
-        stop: null,
+        model: "gpt-3.5-turbo",
+        messages: [
+            { role: "system", content: "You are a helpful assistant that summarizes text." },
+            { role: "user", content: `Summarize the following text to 1/3 of its length:\n\n${note}` },
+        ],
+        max_tokens: Math.ceil(note.split(' ').length / 3), // This is just a heuristic
         temperature: 0.7,
     };
-
     try {
         const response = await fetch(CHATGPT_API_URL, {
             method: "POST",
@@ -251,12 +252,14 @@ async function generateSummary(note: text): Promise<text | null> {
         });
 
         if(!response.ok) {
+            console.error("API request failed:", response.statusText);
             return null;
         }
 
         const respo = await response.json();
-        return respo.choices[0].text.trim();
+        return respo.choices[0].message.content.trim();
     } catch (error) {
+         console.error("Error occurred during API request:", error);
         return null;
     }
 }
