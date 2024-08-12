@@ -49,7 +49,7 @@ type messages = typeof messages.tsType
 const UserSummary = StableBTreeMap<Principal,Summary>(0)
 
 const CHATGPT_API_KEY = "your_openai_api_key_here";
-const CHATGPT_API_URL = "https://api.openai.com/v1/completions";
+const CHATGPT_API_URL = "https://api.openai.com/v1/chat/completions";
 
 
 export default Canister({
