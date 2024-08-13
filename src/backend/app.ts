@@ -103,7 +103,7 @@ export default Canister({
        }
      }),
 
-    updateNote: query([text,text], Result(Vec(NoteSummary),messages), async (note, id)=>{
+    updateNote: update([text,text], Result(Vec(NoteSummary),messages), async (note, id)=>{
         try{
             if(!note || note.length< 10  || !id){
                 return Err({Unsupported:"Error occured!! note is less 10 or empty id"})
@@ -136,7 +136,8 @@ export default Canister({
                     }                         
                 }
             }
-            const UserSummaryOp = UserSummary.get(ic.caller());
+            const UserSummaryOp = await UserSummary.get(ic.caller());
+            console.log(UserSummaryOp?.summaries)
             return Ok(UserSummaryOp?.summaries)
               
 
@@ -159,13 +160,15 @@ export default Canister({
         }
     }),
 
-    deleteAll: query([],Result(text,messages),()=>{
+    deleteAll: update([],Result(text,messages),()=>{
         try{
             const userSummaryOpt = UserSummary.get(ic.caller());
             if(!userSummaryOpt){
                 return Err({NotFound:"You do not have any summary yet"})
             }
             UserSummary.remove(ic.caller())
+            const userSummaryOpt2 = UserSummary.get(ic.caller());
+            console.log(userSummaryOpt2)
             return Ok("delete successfully")
 
         }catch(error){
