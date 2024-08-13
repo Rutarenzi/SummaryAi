@@ -7,7 +7,21 @@ import toast from "react-hot-toast";
 
 const TopBar=()=>{
   const [query,setQuerry] = useState(" ");
-  const { setError,setSummaries,loggedIn } = useContext(MyContext);
+  const { setError,setSummaries,loggedIn,getSummary} = useContext(MyContext);
+  
+  const deleteAll2=async()=>{
+    const response=  await deleteAll();
+    if(response.Err){
+      toast.error(`${response.Err.NotFound || response.Err.Unsupported}`);
+    }
+     
+     if(response.Ok){
+      window.location.reload()
+      toast.success("All deleted successfully");
+    }
+     await getSummary()
+
+  }
 
    const submitQuery =async(e)=>{
     e.preventDefault();
@@ -54,7 +68,7 @@ const TopBar=()=>{
                 </button>
              </div></div>
              <div className="btn-logout">
-                <button className="BtnSave" onClick={deleteAll}>
+                <button className="BtnSave" onClick={deleteAll2}>
                   Delete All
                 </button>
                 <button className="BtnSave" onClick={login}>
