@@ -42,12 +42,10 @@ const Summary=()=>{
     setEditor(false)
     if(response.Ok){
     setSummaries(response.Ok)
-    await getSummary()
     }
     if(response.Err){
       toast.error(`${response.Err.NotFound ||response.Err.Error || response.Err.Unsupported}`);
     }
-    await getSummary()
    }
   }
   const deleteNote=async(id)=>{
