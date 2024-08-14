@@ -84,6 +84,9 @@ cd SummaryAi
 ### to install and deploy Step by Step Follow below commands:
 
 ```bash
+# install the azle dfx extension
+npx azle install-dfx-extension
+
 # Installing Dependencies
 npm i
 
