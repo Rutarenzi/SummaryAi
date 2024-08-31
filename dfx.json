@@ -1,47 +1,58 @@
 {
     "canisters": {
-       
-         "frontend":{
-            "dependencies":["backend"],
-            "frontend":{
-                "entrypoint":"src/frontend/index.html"
+        "frontend": {
+            "dependencies": [
+                "backend"
+            ],
+            "frontend": {
+                "entrypoint": "src/frontend/index.html"
             },
-            "source":[
+            "source": [
                 "src/frontend/src/assets",
                 "dist"
             ],
-            "type":"assets",
-            "gzip":true
-         },
-         "backend":{
-            "type":"azle",
-            "candid_gen":"automatic",
-            "main":"src/backend/app.ts",
-            "candid":"src/backend/app.did",
+            "type": "assets",
+            "gzip": true
+        },
+        "backend": {
+            "type": "custom",
+            "candid_gen": "automatic",
+            "main": "src/backend/app.ts",
+            "candid": "src/backend/app.did",
             "declarations": {
-        "node_compatibility": true
-      },
-            "build":"npx azle backend",
-            "wasm":".azle/backend/backend.wasm",
-            "gzip":true,
+                "node_compatibility": true
+            },
+            "build": "npx azle backend",
+            "wasm": ".azle/backend/backend.wasm",
+            "gzip": true,
             "metadata": [
-              {
-                  "name": "candid:service",
-                  "path": "src/backend/app.did"
-              },
-              {
-                  "name": "cdk:name",
-                  "content": "azle"
-              }
-          ]
-         } 
-    },
-    "defaults":{
-        "build":{
-            "args":"",
-            "packtool":""
+                {
+                    "name": "candid:service",
+                    "path": "src/backend/app.did"
+                },
+                {
+                    "name": "cdk:name",
+                    "content": "azle"
+                }
+            ]
+        },
+        "internet_identity": {
+            "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
+            "frontend": {},
+            "remote": {
+                "id": {
+                    "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
+                }
+            },
+            "type": "custom",
+            "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz"
         }
     },
-    "version":1
-
+    "defaults": {
+        "build": {
+            "args": "",
+            "packtool": ""
+        }
+    },
+    "version": 1
 }
