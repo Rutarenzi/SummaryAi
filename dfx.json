@@ -15,7 +15,7 @@
             "gzip": true
         },
         "backend": {
-            "type": "custom",
+            "type": "azle",
             "candid_gen": "automatic",
             "main": "src/backend/app.ts",
             "candid": "src/backend/app.did",
