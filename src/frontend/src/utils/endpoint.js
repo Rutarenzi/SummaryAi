@@ -5,12 +5,12 @@ export const welcome=async()=>{
  return await window.canister.summary.welcome();
 }
 
-export const createOrAdd=async(note)=>{
-  return await window.canister.summary.createOrAdd(note)
+export const createOrAdd=async(note,summary)=>{
+  return await window.canister.summary.createOrAdd(note,summary)
 }
 
-export const updateNote=async(note,id)=>{
-    return await window.canister.summary.updateNote(note,id)
+export const updateNote=async(note,summary,id)=>{
+    return await window.canister.summary.updateNote(note,summary,id)
 }
 
 export const getAll=async()=>{

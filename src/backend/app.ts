@@ -48,9 +48,6 @@ type messages = typeof messages.tsType
 
 const UserSummary = StableBTreeMap<Principal,Summary>(0)
 
-const CHATGPT_API_KEY = "your_openai_api_key_here";
-const CHATGPT_API_URL = "https://api.openai.com/v1/chat/completions";
-
 
 export default Canister({
     welcome: query([],text,()=>{
@@ -58,17 +55,13 @@ export default Canister({
     }),
      
  
-    createOrAdd: update([text], Result(Summary,messages), async(note)=>{
+    createOrAdd: update([text,text], Result(Summary,messages), async(note,summary)=>{
        try{
-        if(!note || note.length < 10){
-            return Err({Unsupported:"Please note can not be empty or less 10"})
+        if(!note || note.length < 10 || !summary){
+            return Err({Unsupported:"Please note can not be empty or less 10 and summary cannot empty"})
         }
 
         const UserSummaryOpt = UserSummary.get(ic.caller());
-         const summary = await generateSummary(note);
-        if(!summary){
-            return Err({Error:"Try again! we can not summarize your not now"})
-        }
 
         const noteSummary: NoteSummary = {
           id:  uuidv4(),
@@ -103,10 +96,10 @@ export default Canister({
        }
      }),
 
-    updateNote: update([text,text], Result(Vec(NoteSummary),messages), async (note, id)=>{
+    updateNote: update([text,text,text], Result(Vec(NoteSummary),messages), async (note,summary,id)=>{
         try{
-            if(!note || note.length< 10  || !id){
-                return Err({Unsupported:"Error occured!! note is less 10 or empty id"})
+            if(!note || note.length< 10  || !id || !summary){
+                return Err({Unsupported:"Error occured!! note is less 10 or empty id or summary cannot be empty"})
             }
 
             const userSummaryOpt = UserSummary.get(ic.caller());
@@ -119,10 +112,7 @@ export default Canister({
                 if(!userSummaryOpt.summaries.map((item:NoteSummary)=> item.id).includes(id)){
                     return Err({NotFound:"this Notesummary does not exist or belong to you"})
                 } else {
-                    const summary = await generateSummary(note);
-                    if(!summary){
-                        return Err({Error:"Try again we can summarize your note for  now"})
-                    }
+
                     const index = userSummaryOpt.summaries.findIndex((item)=>{return item.id === id});
                     const existNoteSummary = userSummaryOpt.summaries
                     if(index !== -1){
@@ -234,35 +224,3 @@ export default Canister({
 });
 
 
-async function generateSummary(note: string): Promise<string| null> {
-    const data = {
-        model: "gpt-3.5-turbo",
-        messages: [
-            { role: "system", content: "You are a helpful assistant that summarizes text." },
-            { role: "user", content: `Summarize the following text to 1/3 of its length:\n\n${note}` },
-        ],
-        max_tokens: Math.ceil(note.split(' ').length / 3), // This is just a heuristic
-        temperature: 0.7,
-    };
-    try {
-        const response = await fetch(CHATGPT_API_URL, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${CHATGPT_API_KEY}`,
-            },
-            body: JSON.stringify(data),
-        });
-
-        if(!response.ok) {
-            console.error("API request failed:", response.statusText);
-            return null;
-        }
-
-        const respo = await response.json();
-        return respo.choices[0].message.content.trim();
-    } catch (error) {
-         console.error("Error occurred during API request:", error);
-        return null;
-    }
-}
