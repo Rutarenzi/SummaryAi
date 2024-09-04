@@ -3,12 +3,14 @@ import { MyContext } from "../Context/myContext";
 import { createOrAdd, updateNote, deleteSingle } from "../utils/endpoint";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai"
 import toast from "react-hot-toast";
+import callApi from "../Context/callApi";
 
 const Summary = () => {
   const [input, setInput] = useState("");
   const [editor, setEditor] = useState(false);
   const [id, setId] = useState("")
   const { summaries, error, loading, getSummary, setSummaries } = useContext(MyContext);
+  const { generateSummary } = callApi()
 
   useEffect(async () => {
     const allSummary = async () => {
@@ -21,9 +23,13 @@ const Summary = () => {
     e.preventDefault();
     const note = input;
     if (note.length > 10) {
-      await createOrAdd(note)
-      await getSummary()
-      setInput("")
+      const summary = await generateSummary(note);
+      if(summary){
+        await createOrAdd(note,summary)
+        await getSummary()
+        setInput("")
+      }
+     
     }
   };
   const editNote = async (note) => {
@@ -36,16 +42,21 @@ const Summary = () => {
     e.preventDefault();
     const note = input;
     if (note && id) {
-      const response = await updateNote(input, id);
-      setInput("");
-      setId("");
-      setEditor(false)
-      if (response.Ok) {
-        setSummaries(response.Ok)
+      const summary = await generateSummary(note);
+      if(summary){
+        const response = await updateNote(input,summary,id);
+        setInput("");
+        setId("");
+        setEditor(false)
+        if (response.Ok) {
+          setSummaries(response.Ok)
+        }
+        if (response.Err) {
+          toast.error(`${response.Err.NotFound || response.Err.Error || response.Err.Unsupported}`);
+        }
       }
-      if (response.Err) {
-        toast.error(`${response.Err.NotFound || response.Err.Error || response.Err.Unsupported}`);
-      }
+   
+     
     }
   }
   const deleteNote = async (id) => {
