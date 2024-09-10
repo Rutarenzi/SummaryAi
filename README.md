@@ -108,10 +108,13 @@ npx azle install-dfx-extension
 npm i
 
 # Starts the replica, running in the background
-dfx start --background
+dfx start --host 127.0.0.1:8000 --clean --background
 
 # Deploys
-dfx deploy 
+dfx deploy
+or
+
+AZLE_AUTORELOAD=true dfx deploy
 ```
 
 Once the job completes, your application will be available at `http://localhost:8080?canisterId={asset_canister_id}`.
