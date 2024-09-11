@@ -67,7 +67,7 @@ Before you begin, ensure you have met the following requirements:
 ```
 - Azle version use 
  ```
-  azle 0.23.0
+  azle 0.24.1
  ```
 
  - podman verion use
@@ -101,8 +101,6 @@ cd SummaryAi
 ### to install and deploy Step by Step Follow below commands:
 
 ```bash
-# install the azle dfx extension
-npx azle install-dfx-extension
 
 # Installing Dependencies
 npm i
