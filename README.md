@@ -58,7 +58,7 @@ Before you begin, ensure you have met the following requirements:
 - **dfx**: You have installed the latest version of the DFINITY Canister SDK, `dfx`. You can download it from the DFINITY SDK page. [installation guide](https://demergent-labs.github.io/azle/get_started.html#installation)
 
  ```
-  use version dfx 0.21.0
+  use version dfx 0.22.0
  ```
 - **Node.js**: You have installed Node.js, version 18 or above.
 ```
