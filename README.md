@@ -93,7 +93,7 @@ If you want to test your project locally, you can use the following commands:
 Cloning repo:
 
 ```bash
-git clone https://github.com/ahdrahees/baatcheet.git
+git clone https://github.com/Rutarenzi/SummaryAi.git
 cd SummaryAi
 ```
 
